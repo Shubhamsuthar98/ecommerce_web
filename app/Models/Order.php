@@ -7,9 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     //
+    protected $fillable = ['user_id', 'total_amount', 'status'];
 
-    public function products()
+    public function user()
     {
-        return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id');
+        return $this->belongsTo(User::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

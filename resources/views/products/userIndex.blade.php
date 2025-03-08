@@ -9,17 +9,14 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-12">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                @if (session('success'))
+                @if(session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
                 </div>
                 @endif
 
                 <div class="p-6 text-gray-900 dark:text-gray-100 flex flex-wrap gap-4">
-
-
-                    @if (!empty($products))
-
+                    @if( isset($products) && $products->isNotEmpty())
                     @foreach($products as $product)
                     <div class="card mr-4 mb-4" style="width: 20rem; height: 25rem;">
                         <img class="card-img-top img-thumbnail  w-12 h-2" src="{{ isset($product->photo) ? asset('storage/'. $product->photo) : asset('storage/Product_sample_icon.png')  }}" alt="{{ $product->name }}" height="40%" width="40%" style="max-height: 50%">

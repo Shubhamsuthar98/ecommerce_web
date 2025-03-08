@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
@@ -17,10 +18,22 @@ Route::middleware(['auth', 'role:user', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+
+    Route::post('cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+    Route::post('cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+    Route::post('order', [OrderController::class, 'placeOrder'])->name('order.place');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('products', ProductController::class);
 });
 
 // Route::get('/dashboard', function () {
@@ -59,10 +72,3 @@ require __DIR__ . '/auth.php';
 //         die;
 //     });
 // });
-
-Route::resource('products', ProductController::class);
-
-Route::post('cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-Route::get('cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
-Route::post('cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
